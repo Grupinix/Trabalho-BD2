@@ -1,0 +1,9 @@
+version: "3.8"
+
+services:
+  oracle-xe:
+    image: gvenzl/oracle-xe:latest
+    container_name: trabalho-bd2-oracle
+    env_file: .env
+    ports:
+      - "1521:1521"
