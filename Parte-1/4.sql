@@ -5,11 +5,21 @@ FROM (
         DC.TABLE_NAME ||
         '(' ||
         (
-            SELECT LISTAGG((COLUMN_NAME || ' ' || ATC.DATA_TYPE || (
-                CASE WHEN ATC.DATA_TYPE = 'VARCHAR2'
-                    THEN ('(' || ATC.CHAR_LENGTH || ')')
+            SELECT LISTAGG((
+                COLUMN_NAME || ' ' || ATC.DATA_TYPE || (
+                CASE
+                    WHEN ATC.DATA_TYPE = 'VARCHAR2'
+                        THEN ('(' || ATC.CHAR_LENGTH || ')')
+                    WHEN ATC.DATA_TYPE = 'NUMBER' AND (
+                            ATC.DATA_PRECISION IS NOT NULL AND
+                            ATC.DATA_SCALE IS NOT NULL
+                        )
+                        THEN ('(' || ATC.DATA_PRECISION || ',' || ATC.DATA_SCALE || ')')
+                    WHEN ATC.DATA_TYPE = 'NUMBER' AND ATC.DATA_PRECISION IS NOT NULL
+                        THEN ('(' || ATC.DATA_PRECISION || ')')
                     ELSE ''
-                END
+                END ||
+                CASE WHEN ATC.NULLABLE = 'N' THEN ' NOT NULL' ELSE '' END
             )), ', ')
             FROM ALL_TAB_COLS ATC
             WHERE ATC.TABLE_NAME = DC.TABLE_NAME

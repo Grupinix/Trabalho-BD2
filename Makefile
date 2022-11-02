@@ -12,7 +12,7 @@ configure:
 	bash ./configure.sh
 
 stop:
-	docker-compose down
+	docker-compose stop
 
 remove:
 	docker-compose down -v
