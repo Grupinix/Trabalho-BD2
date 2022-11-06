@@ -1,0 +1,1 @@
+/* Empregados devem ter no mínimo 18 anos 8 */
