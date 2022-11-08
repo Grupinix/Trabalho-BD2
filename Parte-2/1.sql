@@ -1,1 +1,25 @@
-/* Empregados devem ter no mínimo 18 anos 8 */
+/* Validação de E-Mail */
+
+CREATE OR REPLACE FUNCTION VALIDA_EMAIL(EMAIL IN VARCHAR2)
+RETURN VARCHAR2 AS
+BEGIN
+    IF NOT REGEXP_LIKE(EMAIL, '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$') THEN
+        RAISE_APPLICATION_ERROR(-2520, 'E-MAIL INVÁLIDO');
+    END IF;
+    RETURN EMAIL;
+END;
+
+SELECT VALIDA_EMAIL('yÇ0120asdaurinogueira@id.uff.br') FROM DUAL;
+
+/* Só é permitido o novo registro de PAÍSES que comecem com B (ou b) */
+
+CREATE OR REPLACE FUNCTION COUNTRY_B(COUNTRY IN VARCHAR2)
+RETURN VARCHAR2 AS
+BEGIN
+    IF (NOT COUNTRY LIKE 'B%') AND (NOT COUNTRY LIKE 'b%') THEN
+        RAISE_APPLICATION_ERROR(-2025, 'NAÇÃO INVÁLIDA');
+    END IF;
+    RETURN COUNTRY;
+END;
+
+SELECT COUNTRY_B('BRASIL') FROM DUAL;
