@@ -11,12 +11,12 @@ END;
 
 SELECT VALIDA_EMAIL('yÇ0120asdaurinogueira@id.uff.br') FROM DUAL;
 
-/* Só é permitido o novo registro de PAÍSES que comecem com B (ou b) */
+/* Caso o nome comece com M ou m o nome da nação precisa começar com B ou b */
 
-CREATE OR REPLACE FUNCTION COUNTRY_B(COUNTRY IN VARCHAR2)
+CREATE OR REPLACE FUNCTION COUNTRY_B(COUNTRY IN VARCHAR2, NAME IN VARCHAR2)
 RETURN VARCHAR2 AS
 BEGIN
-    IF (NOT COUNTRY LIKE 'B%') AND (NOT COUNTRY LIKE 'b%') THEN
+    IF ((NOT COUNTRY LIKE 'B%') AND (NOT COUNTRY LIKE 'b%') AND (NAME LIKE 'M%' OR NAME LIKE 'm%')) THEN
         RAISE_APPLICATION_ERROR(-2025, 'NAÇÃO INVÁLIDA');
     END IF;
     RETURN COUNTRY;
